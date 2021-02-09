@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+// Dependencies
+import React from 'react'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
+// Components
+import Home from './pages/home.js'
+import NavBar from './components/nav_bar.js'
+import SignUp from './client_test_form.js'
+
+
+// React App (Parent Component)
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <div className="App">
+                <NavBar />
+                <Switch>
+                    <Route path='/' exact component={Home} />
+                    <Route path='/signup' component={SignUp} />
+
+                </Switch>
+            </div>
+        </Router>
+    );
 }
 
 export default App;
