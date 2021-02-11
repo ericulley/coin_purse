@@ -29,3 +29,21 @@ a {
     justify-content: space-around;
     align-items: center;
 }
+
+#portfolio-cont {
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.coin-cont {
+    background-color: #eee;
+    height: auto;
+    width: 10em;
+    padding: .5em;
+    margin: .5em;
+    border: 1px solid black;
+    border-radius: 1em;
+
+}
