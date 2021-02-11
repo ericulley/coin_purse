@@ -9,10 +9,11 @@ class NavBar extends React.Component {
                     <Link to={`/`}>
                         <p className="logo">Coin Purse</p>
                     </Link>
-                    <h6>Market</h6>
-                    <h6>Portfolio</h6>
-                    <Link to={`/profile`}>
-                        <button>Profile</button>
+                    <Link to={'/market'}>
+                        <h6>Market</h6>
+                    </Link>
+                    <Link to={'/portfolio'}>
+                        <h6>Portfolio</h6>
                     </Link>
                 </div>
                 <div id="right-nav">
