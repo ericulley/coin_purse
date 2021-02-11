@@ -17,7 +17,9 @@ class NavBar extends React.Component {
                     </Link>
                 </div>
                 <div id="right-nav">
-                    <p>Log In</p>
+                    <Link to={`/login`}>
+                        <p>Log In</p>
+                    </Link>
                     <Link to={`/signup`}>
                         <button>Get Started</button>
                     </Link>

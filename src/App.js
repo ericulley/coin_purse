@@ -9,6 +9,7 @@ import SignUp from './client_test_form.js'
 import Market from './pages/market.js'
 import Portfolio from './pages/portfolio.js'
 
+
 // React App (Parent Component)
 function App() {
     return (
