@@ -1,28 +1,31 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 class NavBar extends React.Component {
     render = () => {
         return (
             <div id="navbar">
                 <div id="left-nav">
-                    <Link to={`/`}>
+                    <NavLink to={`/`}>
                         <p className="logo">Coin Purse</p>
-                    </Link>
-                    <Link to={'/market'}>
+                    </NavLink>
+                    <NavLink to={'/market'}>
                         <h6>Market</h6>
-                    </Link>
-                    <Link to={'/portfolio'}>
+                    </NavLink>
+                    <NavLink to={'/portfolio'}>
                         <h6>Portfolio</h6>
-                    </Link>
+                    </NavLink>
                 </div>
                 <div id="right-nav">
-                    <Link to={`/login`}>
+                    <NavLink to={`/profile`}>
+                        <p>Profile</p>
+                    </NavLink>
+                    <NavLink to={`/login`}>
                         <p>Log In</p>
-                    </Link>
-                    <Link to={`/signup`}>
+                    </NavLink>
+                    <NavLink to={`/signup`}>
                         <button>Get Started</button>
-                    </Link>
+                    </NavLink>
                 </div>
             </div>
         )

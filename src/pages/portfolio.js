@@ -13,7 +13,7 @@ class Portfolio extends React.Component {
         })
     }
     getPortfolio = () => {
-        axios.get('http://localhost:8080/coins').then(
+        axios.get('/coins').then(
             (res) => {
                 this.setState({
                     coins: res.data
@@ -24,7 +24,7 @@ class Portfolio extends React.Component {
     updateCoin = (event) => {
         event.preventDefault()
         if (!this.state.purchaseAmount) {
-            axios.put('http://localhost:8080/coins/' + event.target.id,
+            axios.put('/coins/' + event.target.id,
                 {
                     currentPrice: this.state.currentPrice,
                 })
@@ -36,7 +36,7 @@ class Portfolio extends React.Component {
                 })
             document.getElementById(event.target.id).reset()
         } else if (!this.state.currentPrice) {
-            axios.put('http://localhost:8080/coins/' + event.target.id,
+            axios.put('/coins/' + event.target.id,
                 {
                     purchaseAmount: this.state.purchaseAmount,
                 })
@@ -48,7 +48,7 @@ class Portfolio extends React.Component {
                 })
             document.getElementById(event.target.id).reset()
         } else {
-            axios.put('http://localhost:8080/coins/' + event.target.id, this.state)
+            axios.put('/coins/' + event.target.id, this.state)
                 .then((res) => {
                     this.setState({
                         coins: res.data
@@ -60,7 +60,7 @@ class Portfolio extends React.Component {
 
     }
     remove = (event) => {
-        axios.delete('http://localhost:8080/coins/' + event.target.id)
+        axios.delete('/coins/' + event.target.id)
             .then((res) => {
                 this.setState({
                     coins: res.data
@@ -70,6 +70,9 @@ class Portfolio extends React.Component {
     }
     componentDidMount = () => {
         this.getPortfolio()
+        axios.get("https://api.nomics.com/v1/currencies/ticker?key=7562ee9754eaae27647e8a6b82a1a527&ids=BTC,ETH,XRP&interval=1d,30d").then((res) => {
+            console.log(res.data[0].price)
+        })
     }
     render = () => {
         return (
