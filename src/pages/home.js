@@ -16,7 +16,7 @@ class Home extends React.Component {
     }
     createNewCoin = (event) => {
         event.preventDefault()
-        axios.post('https://mysterious-atoll-88793.herokuapp.com/coins', this.state).then((res) => {
+        axios.post('/coins', this.state).then((res) => {
             console.log(res)
         })
         document.getElementById('new-coin-form').reset()
