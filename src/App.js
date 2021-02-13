@@ -16,13 +16,16 @@ import Portfolio from './pages/portfolio.js'
 // React App (Parent Component)
 class App extends React.Component {
     state = {
-        usersName: '',
+        userName: '',
         userEmail: '',
-        authorizedUser: false,
+        authorized: false,
     }
-    getUserData = (auth) => {
+    getUserData = (authUser) => {
+        console.log(authUser)
         this.setState({
-            authorizedUser: auth,
+            userName: authUser.userName,
+            userEmail: authUser.email,
+            authorized: authUser.authorized,
         })
     }
     render = () => {
@@ -37,7 +40,7 @@ class App extends React.Component {
                         <Route path='/profile' component={Profile} />
                         <Route path='/market' component={Market} />
                         <Route path='/portfolio' component={
-                            this.state.authorizedUser ?
+                            this.state.authorized ?
                             Portfolio : UnAuthUser
                             }
                         />

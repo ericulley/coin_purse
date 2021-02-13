@@ -3,14 +3,52 @@ import axios from 'axios'
 
 class Portfolio extends React.Component {
     state = {
+        name: '',
+        symbol: '',
         purchaseAmount: null,
-        currentPrice: null,
+        editPurchaseAmount: null,
         coins: []
     }
-    handleChange = (event) => {
+    handleAddCoinChange = (event) => {
+        this.setState({
+            [event.target.id]: event.target.type === 'number' ? event.target.value - 0 : event.target.value.toLowerCase(),
+        })
+    }
+    handleUpdateCoinChange = (event) => {
         this.setState({
             [event.target.id]: event.target.type === 'number' ? event.target.value - 0 : event.target.value,
         })
+    }
+    createNewCoin = (event) => {
+        event.preventDefault()
+        axios.post('/coins', this.state).then((res) => {
+            console.log(res)
+        })
+        document.getElementById('new-coin-form').reset()
+        this.getPortfolio()
+    }
+    updateCoin = (event) => {
+        event.preventDefault()
+        axios.put('/coins/' + event.target.id,
+            {
+                purchaseAmount: this.state.editPurchaseAmount
+            })
+            .then((res) => {
+                // this.setState({
+                //     coins: res.data
+                // })
+                this.getPortfolio()
+            })
+        document.getElementById(event.target.id).reset()
+    }
+    remove = (event) => {
+        axios.delete('/coins/' + event.target.id)
+            .then((res) => {
+                this.setState({
+                    coins: res.data
+                })
+                this.getPortfolio()
+            })
     }
     getPortfolio = () => {
         axios.get('/coins')
@@ -49,59 +87,25 @@ class Portfolio extends React.Component {
         })
         console.log("This is the coins state on line 49: ", this.state.coins)
     }
-    updateCoin = (event) => {
-        event.preventDefault()
-        if (!this.state.purchaseAmount) {
-            axios.put('/coins/' + event.target.id,
-                {
-                    currentPrice: this.state.currentPrice,
-                })
-                .then((res) => {
-                    this.setState({
-                        coins: res.data
-                    })
-                    this.getPortfolio()
-                })
-            document.getElementById(event.target.id).reset()
-        } else if (!this.state.currentPrice) {
-            axios.put('/coins/' + event.target.id,
-                {
-                    purchaseAmount: this.state.purchaseAmount,
-                })
-                .then((res) => {
-                    this.setState({
-                        coins: res.data
-                    })
-                    this.getPortfolio()
-                })
-            document.getElementById(event.target.id).reset()
-        } else {
-            axios.put('/coins/' + event.target.id, this.state)
-                .then((res) => {
-                    this.setState({
-                        coins: res.data
-                    })
-                    this.getPortfolio()
-                })
-            document.getElementById(event.target.id).reset()
-        }
-
-    }
-    remove = (event) => {
-        axios.delete('/coins/' + event.target.id)
-            .then((res) => {
-                this.setState({
-                    coins: res.data
-                })
-                this.getPortfolio()
-            })
-    }
     componentDidMount = () => {
         this.getPortfolio()
     }
     render = () => {
         return (
             <div>
+                <h1>Add Coin</h1>
+                <form id="new-coin-form" onSubmit={this.createNewCoin}>
+                    <label htmlFor="name">Coin Name</label>
+                    <input id="name" type="text" onChange={this.handleAddCoinChange}/>
+                    <br/>
+                    <label htmlFor="symbol">Coin Symbol</label>
+                    <input id="symbol" type="text" onChange={this.handleAddCoinChange}/>
+                    <br/>
+                    <label htmlFor="purchaseAmount">Purchase Amount</label>
+                    <input id="purchaseAmount" type="number" step="0.00001" onChange={this.handleAddCoinChange}/>
+                    <br/>
+                    <input type="submit" value="Add To Portfolio" />
+                </form>
                 <h1>Your Portfolio</h1>
                 <div id="portfolio-cont">
                 {this.state.coins.map((coin) => {
@@ -114,11 +118,8 @@ class Portfolio extends React.Component {
                             <details>
                                 <summary>Edit</summary>
                                 <form id={coin.id} onSubmit={this.updateCoin}>
-                                    <label htmlFor="purchaseAmount">Amount Owned</label>
-                                    <input id="purchaseAmount" type="number" step="0.00001" onChange={this.handleChange}/>
-                                    <br/>
-                                    <label htmlFor="currentPrice">Current Price</label>
-                                    <input id="currentPrice" type="number" step="0.00001" onChange={this.handleChange}/>
+                                    <label htmlFor="editPurchaseAmount">Amount Owned</label>
+                                    <input id="editPurchaseAmount" type="number" step="0.00001" onChange={this.handleUpdateCoinChange}/>
                                     <br/>
                                     <input type="submit" value="Update Coin" />
                                 </form>
