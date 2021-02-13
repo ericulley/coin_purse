@@ -17,6 +17,7 @@ import Portfolio from './pages/portfolio.js'
 class App extends React.Component {
     state = {
         usersName: '',
+        userEmail: '',
         authorizedUser: false,
     }
     getUserData = (auth) => {

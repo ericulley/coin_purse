@@ -11,7 +11,7 @@ class Home extends React.Component {
     }
     handleChange = (event) => {
         this.setState({
-            [event.target.id]: event.target.type === 'number' ? event.target.value - 0 : event.target.value,
+            [event.target.id]: event.target.type === 'number' ? event.target.value - 0 : event.target.value.toLowerCase(),
         })
     }
     createNewCoin = (event) => {
@@ -33,14 +33,8 @@ class Home extends React.Component {
                     <label htmlFor="symbol">Coin Symbol</label>
                     <input id="symbol" type="text" onChange={this.handleChange}/>
                     <br/>
-                    <label htmlFor="purchasePrice">Purchase Price</label>
-                    <input id="purchasePrice" type="number" step="0.00001" onChange={this.handleChange}/>
-                    <br/>
                     <label htmlFor="purchaseAmount">Purchase Amount</label>
                     <input id="purchaseAmount" type="number" step="0.00001" onChange={this.handleChange}/>
-                    <br/>
-                    <label htmlFor="currentPrice">Current Price</label>
-                    <input id="currentPrice" type="number" step="0.00001" onChange={this.handleChange}/>
                     <br/>
                     <input type="submit" value="Add To Portfolio" />
                 </form>
