@@ -8,6 +8,7 @@ import NavBar from './components/nav_bar.js'
 import UnAuthUser from './components/unauth_user.js'
 import SignUp from './pages/signup.js'
 import LogIn from './pages/login.js'
+import LogOut from './pages/logout.js'
 import Profile from './pages/profile.js'
 import Portfolio from './pages/portfolio.js'
 
@@ -23,10 +24,18 @@ class App extends React.Component {
     getUserData = (authUser) => {
         console.log(authUser)
         this.setState({
-            userID: authUser.clientId,
+            userID: authUser.client,
             userName: authUser.userName,
             userEmail: authUser.email,
             authorized: authUser.authorized,
+        })
+    }
+    logOut = () => {
+        this.setState({
+            userID: null,
+            userName: '',
+            userEmail: '',
+            authorized: false,
         })
     }
     render = () => {
@@ -35,15 +44,16 @@ class App extends React.Component {
                 <div className="App">
                     <NavBar parentState={this.state}/>
                     <Switch>
-                        <Route path='/' exact component={Home} />
+                        <Route path='/' exact render={props => <Home parentState={this.state}/>} />
                         <Route path='/signup' component={SignUp} />
-                        <Route path='/login' render={props => <LogIn {...props} getUserData={this.getUserData}/> }/>
+                        <Route path='/login' exact render={props => <LogIn {...props} getUserData={this.getUserData}/> }/>
                         <Route path='/profile' component={Profile} />
                         <Route path='/portfolio' render={props =>
                             this.state.authorized ?
                             <Portfolio {...props} parentState={this.state}/> : <UnAuthUser/>
                             }
                         />
+                        <Route path='/logout' exact render={props => <LogOut logOut={this.logOut} parentState={this.state}/>} />
                     </Switch>
                 </div>
             </Router>

@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+const API_KEY = process.env.REACT_APP_NOMICS_API_KEY
 
 class Portfolio extends React.Component {
     state = {
@@ -21,14 +22,14 @@ class Portfolio extends React.Component {
     }
     createNewCoin = (event) => {
         event.preventDefault()
-        axios.post('/coins', this.state)
+        axios.post('https://mysterious-atoll-88793.herokuapp.com/coins', this.state)
             .then((res) => {
-                axios.post('/wallets',
+                axios.post('https://mysterious-atoll-88793.herokuapp.com/wallets',
                     {
                         client: this.props.parentState.userID,
                         coinId: res.data.id,
                         coinSymbol: res.data.symbol,
-                        amountOwned: res.data.purchaseAmount
+                        amountOwned: this.state.purchaseAmount
                     })
                 .then((res) => {
                 console.log(res.data)
@@ -39,59 +40,55 @@ class Portfolio extends React.Component {
     }
     updateCoin = (event) => {
         event.preventDefault()
-        axios.put('/coins/' + event.target.id,
+        axios.put('https://mysterious-atoll-88793.herokuapp.com/coins/' + event.target.id,
             {
                 purchaseAmount: this.state.editPurchaseAmount
             })
             .then((res) => {
-                this.setState({
-                    coins: res.data
-                })
                 this.getPortfolio()
             })
         document.getElementById(event.target.id).reset()
     }
-    remove = (event) => {
-        axios.delete('/coins/' + event.target.id)
+    getPortfolio = () => {
+        axios.get('https://mysterious-atoll-88793.herokuapp.com/wallets/' + this.props.parentState.userID)
             .then((res) => {
                 this.setState({
-                    coins: res.data
+                    coins: []
                 })
-                this.getPortfolio()
+                for (let i = 0; i < res.data.length; i++) {
+                    console.log(res.data[i].coinId)
+                    axios.get('https://mysterious-atoll-88793.herokuapp.com/coins/' + res.data[i].coinId)
+                        .then((res2) => {
+                            console.log(res2.data)
+                            this.state.coins.push(res2.data)
+                            this.setCurrentPrice()
+                        })
+                }
             })
     }
-    getPortfolio = () => {
-        axios.get('/coins')
-            .then((res) => {
-                this.setState({
-                    coins: res.data
-                })
-                this.setCurrentPrice()
-            }
-        )
-    }
     setCurrentPrice = () => {
-        // Create Mirror Array
-        const coinsArr = []
         // Fetch Price for Each Coin
         this.state.coins.forEach((coin, i) => {
-            // Load mirror array
-            coinsArr.push(coin)
             // Fetch Price
             axios
-                .get(`https://api.nomics.com/v1/currencies/ticker?key=7562ee9754eaae27647e8a6b82a1a527&ids=${coin.symbol.toUpperCase()}&interval=1d`)
+                .get(`https://api.nomics.com/v1/currencies/ticker?key=${API_KEY}&ids=${coin.symbol.toUpperCase()}&interval=1d`)
                 // Update prices in mirror array
                 .then((res) => {
-                    coinsArr[i].currentPrice = res.data[0].price
+                    this.state.coins[i].currentPrice = res.data[0].price
                 })
                 .catch((err) => {
                     console.log(err)
                 })
         })
-        // Set Mirror Array to Actual Array
-        this.setState({
-            coins: coinsArr,
-        })
+    }
+    remove = (event) => {
+        axios.delete('https://mysterious-atoll-88793.herokuapp.com/wallets/' + event.target.id)
+            .then((res) => {
+            this.getPortfolio()
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
     componentDidMount = () => {
         this.getPortfolio()
@@ -112,12 +109,15 @@ class Portfolio extends React.Component {
                     <br/>
                     <input type="submit" value="Add To Portfolio" />
                 </form>
-                <h1>Your Portfolio</h1>
+                <h1>Portfolio</h1>
                 <div id="portfolio-cont">
                 {this.state.coins.map((coin) => {
                     return (
                         <div className="coin-cont" key={coin.id}>
-                            Coin: <p>{coin.name}</p>
+                            <div className="coin-display">
+                                <p>{coin.name[0].toUpperCase() + coin.name.slice(1)}</p>
+                                <p>{coin.symbol.toUpperCase()}</p>
+                            </div>
                             Price: <p>${(coin.currentPrice - 0).toFixed(2)}</p>
                             Amount Owned: <p>{coin.purchaseAmount}</p>
                             Current Owned Value: <p>${(coin.purchaseAmount * coin.currentPrice).toFixed(2)}</p>

@@ -7,7 +7,7 @@ class Profile extends React.Component {
         clients: []
     }
     getClients = () => {
-        axios.get('/clients').then((res) => {
+        axios.get('https://mysterious-atoll-88793.herokuapp.com/clients').then((res) => {
             this.setState({
                 clients: res.data
             })
@@ -15,7 +15,7 @@ class Profile extends React.Component {
         })
     }
     deleteClient = (event) => {
-        axios.delete('/clients/' + event.target.id).then((res) => {
+        axios.delete('https://mysterious-atoll-88793.herokuapp.com/clients/' + event.target.id).then((res) => {
             this.setState({
                 clients: res.data
             })

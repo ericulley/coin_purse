@@ -3,6 +3,23 @@ import {NavLink} from 'react-router-dom'
 
 class NavBar extends React.Component {
     render = () => {
+        let controls
+        if (this.props.parentState.authorized) {
+            controls = <React.Fragment>
+                <NavLink to={`/logout`}>
+                    <h2>Log Out</h2>
+                </NavLink>
+            </React.Fragment>
+        } else {
+            controls = <React.Fragment>
+                <NavLink to={`/login`}>
+                    <h2>Log In</h2>
+                </NavLink>
+                <NavLink to={`/signup`}>
+                    <button><h2>Get Started</h2></button>
+                </NavLink>
+            </React.Fragment>
+        }
         return (
             <div id="navbar">
                 <div id="left-nav">
@@ -13,19 +30,15 @@ class NavBar extends React.Component {
                         </div>
                     </NavLink>
                     <NavLink to={'/portfolio'}>
-                        <h6>Portfolio</h6>
+                        <h2>Portfolio</h2>
                     </NavLink>
                 </div>
                 <div id="right-nav">
                     <NavLink to={`/profile`}>
-                        <p>Profile</p>
+                        <h2>Profile</h2>
                     </NavLink>
-                    <NavLink to={`/login`}>
-                        <p>Log In</p>
-                    </NavLink>
-                    <NavLink to={`/signup`}>
-                        <button>Get Started</button>
-                    </NavLink>
+                    {controls}
+
                 </div>
             </div>
         )

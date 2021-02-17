@@ -1,0 +1,4 @@
+CREATE TABLE clients (id SERIAL, bio VARCHAR(256), email VARCHAR(50), name VARCHAR(50), password VARCHAR(256));
+CREATE TABLE sessions (id SERIAL, email VARCHAR(50), password VARCHAR(256));
+CREATE TABLE coins (id SERIAL, current_price DECIMAL, name VARCHAR(50), purchase_amount DECIMAL, symbol VARCHAR(6));
+CREATE TABLE wallets (id SERIAL, amount_owned DECIMAL, client BIGINT, coin_id BIGINT, symbol VARCHAR(6));

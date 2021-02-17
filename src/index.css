@@ -4,14 +4,23 @@
     padding: 0;
 }
 
+*:focus {
+    outline: none;
+}
+
 body {
     background-color: ghostwhite;
     font-family: 'PT Serif', serif;
+    text-align: center;
 }
 
 a {
     text-decoration: none;
     color: black;
+}
+
+button {
+    cursor: pointer;
 }
 
 /* Logo Styles */
@@ -32,7 +41,8 @@ h1 {
 }
 
 #left-nav, #right-nav {
-    width: 25%;
+    width: 30%;
+    min-width: 240px;
     height: auto;
     display: flex;
     justify-content: space-around;
@@ -40,8 +50,14 @@ h1 {
 }
 
 #nav-logo-cont {
+    font-size: .8em;
     display: flex;
     align-items: center;
+}
+
+#navbar h2 {
+    font-size: 1em;
+    font-weight: 400;
 }
 
 #navbar img {
@@ -51,6 +67,26 @@ h1 {
 #navbar .logo {
     font-size: 1.5em;
 }
+
+/* Pages */
+
+/* Home Page */
+#logo-header, #welcome-logo {
+    font-size: 6em;
+}
+
+#welcome-logo {
+    height: 2em;
+}
+
+.get-started {
+    background-color: #00a9ce;
+    margin: 2rem;
+    padding: 2rem;
+    font-size: 2rem;
+    border-radius: 2rem;
+}
+
 
 
 #portfolio-cont {
@@ -69,4 +105,9 @@ h1 {
     border: 1px solid black;
     border-radius: 1em;
 
+}
+
+/* Log Out Page */
+#goodbye {
+    margin: 10% 0;
 }
