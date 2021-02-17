@@ -71,7 +71,11 @@ class Portfolio extends React.Component {
         this.state.coins.forEach((coin, i) => {
             // Fetch Price
             axios
-                .get(`https://api.nomics.com/v1/currencies/ticker?key=${API_KEY}&ids=${coin.symbol.toUpperCase()}&interval=1d`)
+                .get(`https://api.nomics.com/v1/currencies/ticker?key=${API_KEY}&ids=${coin.symbol.toUpperCase()}&interval=1d`, {
+                    headers: {
+	                   'Access-Control-Allow-Origin': '*',
+	                }
+                })
                 // Update prices in mirror array
                 .then((res) => {
                     this.state.coins[i].currentPrice = res.data[0].price
