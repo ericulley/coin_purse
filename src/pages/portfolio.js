@@ -22,9 +22,9 @@ class Portfolio extends React.Component {
     }
     createNewCoin = (event) => {
         event.preventDefault()
-        axios.post('https://mysterious-atoll-88793.herokuapp.com/coins', this.state)
+        axios.post('http://localhost:8080/coins', this.state)
             .then((res) => {
-                axios.post('https://mysterious-atoll-88793.herokuapp.com/wallets',
+                axios.post('http://localhost:8080/wallets',
                     {
                         client: this.props.parentState.userID,
                         coinId: res.data.id,
@@ -40,7 +40,7 @@ class Portfolio extends React.Component {
     }
     updateCoin = (event) => {
         event.preventDefault()
-        axios.put('https://mysterious-atoll-88793.herokuapp.com/coins/' + event.target.id,
+        axios.put('http://localhost:8080/coins/' + event.target.id,
             {
                 purchaseAmount: this.state.editPurchaseAmount
             })
@@ -50,14 +50,14 @@ class Portfolio extends React.Component {
         document.getElementById(event.target.id).reset()
     }
     getPortfolio = () => {
-        axios.get('https://mysterious-atoll-88793.herokuapp.com/wallets/' + this.props.parentState.userID)
+        axios.get('http://localhost:8080/wallets/' + this.props.parentState.userID)
             .then((res) => {
                 this.setState({
                     coins: []
                 })
                 for (let i = 0; i < res.data.length; i++) {
                     console.log(res.data[i].coinId)
-                    axios.get('https://mysterious-atoll-88793.herokuapp.com/coins/' + res.data[i].coinId)
+                    axios.get('http://localhost:8080/coins/' + res.data[i].coinId)
                         .then((res2) => {
                             console.log(res2.data)
                             this.state.coins.push(res2.data)
@@ -82,7 +82,7 @@ class Portfolio extends React.Component {
         })
     }
     remove = (event) => {
-        axios.delete('https://mysterious-atoll-88793.herokuapp.com/wallets/' + event.target.id)
+        axios.delete('http://localhost:8080/wallets/' + event.target.id)
             .then((res) => {
             this.getPortfolio()
             })

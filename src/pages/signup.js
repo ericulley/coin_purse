@@ -17,7 +17,7 @@ class SignUp extends React.Component {
     }
     createUser = (event) => {
         event.preventDefault();
-        axios.post('https://mysterious-atoll-88793.herokuapp.com/clients',
+        axios.post('http://localhost:8080/clients',
             {
                 name: this.state.name,
                 email: this.state.email,
@@ -40,7 +40,7 @@ class SignUp extends React.Component {
         document.getElementById('sign-up-form').reset()
     }
     getUsers = () => {
-        axios.get('https://mysterious-atoll-88793.herokuapp.com/clients')
+        axios.get('http://localhost:8080/clients')
             .then((res) => {
                 this.setState({
                     users: res.data
