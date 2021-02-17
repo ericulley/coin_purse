@@ -9,13 +9,13 @@ import UnAuthUser from './components/unauth_user.js'
 import SignUp from './pages/signup.js'
 import LogIn from './pages/login.js'
 import Profile from './pages/profile.js'
-import Market from './pages/market.js'
 import Portfolio from './pages/portfolio.js'
 
 
 // React App (Parent Component)
 class App extends React.Component {
     state = {
+        userID: null,
         userName: '',
         userEmail: '',
         authorized: false,
@@ -23,6 +23,7 @@ class App extends React.Component {
     getUserData = (authUser) => {
         console.log(authUser)
         this.setState({
+            userID: authUser.clientId,
             userName: authUser.userName,
             userEmail: authUser.email,
             authorized: authUser.authorized,
@@ -32,16 +33,15 @@ class App extends React.Component {
         return (
             <Router>
                 <div className="App">
-                    <NavBar />
+                    <NavBar parentState={this.state}/>
                     <Switch>
                         <Route path='/' exact component={Home} />
                         <Route path='/signup' component={SignUp} />
                         <Route path='/login' render={props => <LogIn {...props} getUserData={this.getUserData}/> }/>
                         <Route path='/profile' component={Profile} />
-                        <Route path='/market' component={Market} />
-                        <Route path='/portfolio' component={
+                        <Route path='/portfolio' render={props =>
                             this.state.authorized ?
-                            Portfolio : UnAuthUser
+                            <Portfolio {...props} parentState={this.state}/> : <UnAuthUser/>
                             }
                         />
                     </Switch>

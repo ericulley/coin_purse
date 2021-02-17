@@ -7,10 +7,10 @@ class NavBar extends React.Component {
             <div id="navbar">
                 <div id="left-nav">
                     <NavLink to={`/`}>
-                        <p className="logo">Coin Purse</p>
-                    </NavLink>
-                    <NavLink to={'/market'}>
-                        <h6>Market</h6>
+                        <div id="nav-logo-cont">
+                            <img src="/logos/ICON.svg" alt="cp_logo"/>
+                            <h1 className="logo">COIN PURSE</h1>
+                        </div>
                     </NavLink>
                     <NavLink to={'/portfolio'}>
                         <h6>Portfolio</h6>

@@ -7,7 +7,7 @@ class Portfolio extends React.Component {
         symbol: '',
         purchaseAmount: null,
         editPurchaseAmount: null,
-        coins: []
+        coins: [],
     }
     handleAddCoinChange = (event) => {
         this.setState({
@@ -21,11 +21,21 @@ class Portfolio extends React.Component {
     }
     createNewCoin = (event) => {
         event.preventDefault()
-        axios.post('/coins', this.state).then((res) => {
-            console.log(res)
+        axios.post('/coins', this.state)
+            .then((res) => {
+                axios.post('/wallets',
+                    {
+                        client: this.props.parentState.userID,
+                        coinId: res.data.id,
+                        coinSymbol: res.data.symbol,
+                        amountOwned: res.data.purchaseAmount
+                    })
+                .then((res) => {
+                console.log(res.data)
+                this.getPortfolio()
+            })
         })
         document.getElementById('new-coin-form').reset()
-        this.getPortfolio()
     }
     updateCoin = (event) => {
         event.preventDefault()
@@ -34,9 +44,9 @@ class Portfolio extends React.Component {
                 purchaseAmount: this.state.editPurchaseAmount
             })
             .then((res) => {
-                // this.setState({
-                //     coins: res.data
-                // })
+                this.setState({
+                    coins: res.data
+                })
                 this.getPortfolio()
             })
         document.getElementById(event.target.id).reset()
@@ -72,20 +82,16 @@ class Portfolio extends React.Component {
                 .get(`https://api.nomics.com/v1/currencies/ticker?key=7562ee9754eaae27647e8a6b82a1a527&ids=${coin.symbol.toUpperCase()}&interval=1d`)
                 // Update prices in mirror array
                 .then((res) => {
-                    console.log(res.data[0].price)
-                    console.log(coinsArr[i])
                     coinsArr[i].currentPrice = res.data[0].price
                 })
                 .catch((err) => {
                     console.log(err)
                 })
         })
-        console.log("This is coinArr on line 44", coinsArr)
         // Set Mirror Array to Actual Array
         this.setState({
-            coins: coinsArr
+            coins: coinsArr,
         })
-        console.log("This is the coins state on line 49: ", this.state.coins)
     }
     componentDidMount = () => {
         this.getPortfolio()
