@@ -15,7 +15,7 @@ class LogIn extends React.Component {
     }
     newSession = (event) => {
         event.preventDefault();
-        axios.post('https://mysterious-atoll-88793.herokuapp.com/sessions', this.state)
+        axios.post('http://localhost:8080/sessions', this.state)
             .then((res) => {
                 this.setState({
                     email: '',
