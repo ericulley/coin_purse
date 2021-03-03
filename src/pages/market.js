@@ -4,6 +4,7 @@ import axios from 'axios'
 class Market extends React.Component {
     state = {
         symbol: '',
+        loading: false
     }
     searchBySymbol = (event) => {
         event.preventDefault()
@@ -19,21 +20,22 @@ class Market extends React.Component {
             [event.target.id]: event.target.value,
         })
     }
-    componentDidMount = () => {
+    componentWillMount = () => {
 
     }
     render = () => {
-        return (
-            <div id="market-cont">
-                <h1>Welcome to the Market</h1>
-                <h2>Enter a Coin Symbol below:</h2>
-                <br/>
-                <form action="/search" method="GET">
-                    <input id="symbol" type="text" onChange={this.handleChange} name="symbol"/>
-                    <input type="button" value="search" />
-                </form>
-            </div>
-        )
+        if (this.state.loading) {
+            return <div id="loading">Loading...</div>
+        } else {
+            return (
+                <div id="market-cont">
+                    <h1>Welcome to the Market</h1>
+                    <h2>More Features Coming Soon...</h2>
+
+
+                </div>
+            )
+        }
     }
 }
 

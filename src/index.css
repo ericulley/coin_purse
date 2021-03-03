@@ -2,6 +2,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 *:focus {
@@ -12,6 +13,14 @@ body {
     background-color: ghostwhite;
     font-family: 'PT Serif', serif;
     text-align: center;
+}
+
+.App {
+    /* min-height: calc(100vh - 5rem); */
+}
+
+#wrapper {
+    min-height: calc(100vh - 5rem);
 }
 
 a {
@@ -26,13 +35,21 @@ button {
 /* Logo Styles */
 h1 {
     font-family: 'Oswald', sans-serif;
-    color: #00a9ce;
+    color: black;
+    /* color: #00a9ce; */
 }
 
+h2 {
+    font-size: 2em;
+}
+
+h3 {
+    font-size: 1.4em;
+}
 
 /* Navigation */
 #navbar {
-    background-color: #eee;
+    background-color: black;
     height: 3rem;
     width: 100%;
     display: flex;
@@ -41,7 +58,7 @@ h1 {
 }
 
 #left-nav, #right-nav {
-    width: 30%;
+    width: 20%;
     min-width: 240px;
     height: auto;
     display: flex;
@@ -56,6 +73,7 @@ h1 {
 }
 
 #navbar h2 {
+    color: #eee;
     font-size: 1em;
     font-weight: 400;
 }
@@ -68,11 +86,67 @@ h1 {
     font-size: 1.5em;
 }
 
+#navbar button {
+    font-family: 'PT Serif', serif;
+    font-size: 1em;
+    padding: .25em .5em;
+}
+
+/* Logos */
+.logo {
+    height: 5em;
+    padding: 1em;
+}
+
+/* Footer */
+#footer-cont {
+    background-color: ghostwhite;
+    height: 5rem;
+    width: 96%;
+    margin: 0 auto;
+    margin-top: -5rem;
+    padding: .5rem 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+}
+
+.footer-section {
+    font-size: .8em;
+    height: auto;
+    width: 10rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#vert-rule {
+    background-color: darkgrey;
+    height: auto;
+    width: 2px;
+}
+
+/* Loading */
+#loading {
+    font-size: 3vh;
+    padding: 15%;
+}
+
 /* Pages */
+#portfolio-page, #show-page {
+    animation: fadeIn .5s;
+}
 
 /* Home Page */
+#home-cont {
+    height: calc(100vh - 8rem);
+    margin-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+}
+
 #logo-header, #welcome-logo {
-    font-size: 6em;
+    font-size: calc(10vh);
 }
 
 #welcome-logo {
@@ -81,33 +155,282 @@ h1 {
 
 .get-started {
     background-color: #00a9ce;
-    margin: 2rem;
-    padding: 2rem;
-    font-size: 2rem;
+    width: 30%;
+    margin: 2rem auto;
+    padding: calc(3vh);
+    font-size: calc(3vh);
     border-radius: 2rem;
 }
 
-
-
-#portfolio-cont {
+/* Sign Up, Log In, Profile Pages */
+#sign-up-cont, #login-cont, #profile-cont {
+    background: white;
     width: 70%;
+    height: calc(100vh - 3rem);
+    min-height: auto;
     margin: 0 auto;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+#sign-up-form, #login-form, #profile-details {
+    width: 60%;
+    min-height: auto;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#sign-up-form label, #login-form label, #profile-details * {
+    font-size: 1.25em;
+    margin: .25em;
+}
+
+#profile-details p {
+    color: grey;
+}
+
+
+#sign-up-form input, #login-form input, #profile-details button {
+    font-size: 1.25em;
+    border: 1px solid darkgrey;
+    border-radius: .5em;
+    width: 100%;
+    margin: .25em 0;
+    padding: .5em;
+}
+
+/* Portfolio Page */
+#portfolio-header, #add-coin-header {
+    text-align: left;
+    padding: .5em;
+}
+
+#portfolio-page {
+    height: calc(100vh - 3rem);
+    width: 96%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: repeat(10, 1fr);
+    grid-gap: .5em;
+    justify-content: center;
+    align-items: grid-start;
+}
+
+#new-coin-form {
+    background-color: ghostwhite;
+    height: 100%;
+    min-height: 250px;
+    width: 100%;
+    min-width: 150px;
+    margin-top: 1em;
+    padding: 0 1em;
+    border: 1px solid darkgrey;
+    border-radius: .5em;
+    box-shadow: 1px 1px 3px darkgrey;
+    grid-row: 1 / 6;
+    grid-column: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#new-coin-form label {
+    font-size: 1em;
+    margin-top: .25em;
+}
+
+#new-coin-form input {
+    font-size: 1em;
+    border: 1px solid darkgrey;
+    border-radius: .5em;
+    width: 100%;
+    margin: .25em 0;
+    padding: .2em;
+}
+
+#add-to-portfolio {
+    margin-top: 20px !important;
+}
+
+#portfolio-cont {
+    padding: 0 1em;
+    grid-row: 1 / 11;
+    grid-column: 2 / 3;
+}
+
+.portfolio-labels {
+    height: auto;
+    width: 100%;
+    padding: 0 1em 1em 1em;
+    margin: 0 .5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+#portfolio {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .coin-cont {
-    background-color: #eee;
     height: auto;
-    width: 10em;
-    padding: .5em;
-    margin: .5em;
-    border: 1px solid black;
-    border-radius: 1em;
+    width: 100%;
+    padding: 1em;
+    margin: 0 .5em;
+    border-top: 1px solid darkgrey;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.coin-img {
+    height: 3em;
+    width: 3em;
+    min-width: 3em;
+}
+
+.coin-name-cont {
+    height: 100%;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.coin-name {
+    font-size: 1.25em;
+    font-weight: 600;
+}
+
+/* Show Page */
+#show-page {
+    height: calc(100vh - 3rem);
+    width: 96%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: repeat(10, 1fr);
+    grid-gap: .5em;
+    justify-content: center;
+    align-items: grid-start;
+}
+
+#show-header {
+    text-align: left;
+    padding: .5em;
+}
+
+#edit-coin-cont {
+    background-color: ghostwhite;
+    height: 480px;
+    width: 100%;
+    min-width: 150px;
+    margin-top: 1em;
+    padding: 0 1em;
+    border: 1px solid darkgrey;
+    border-radius: .5em;
+    box-shadow: 1px 1px 3px darkgrey;
+    grid-row: 1 / 9;
+    grid-column: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#edit-coin-cont label {
+    /* text-align: left !important; */
+    font-size: 1em;
+    margin-top: .25em;
+}
+
+#edit-coin-cont p {
+    color: rgba(0, 169, 206, 1);
+    font-size: 1em;
+    padding: .5em 0 0 .5em;
+}
+
+#edit-hr {
+    color: black;
+    height: 1px;
+    width: 100%;
+    margin: 1em 0;
+}
+
+#edit-coin-form input, #edit-coin-cont button {
+    font-size: 1em;
+    border: 1px solid darkgrey;
+    border-radius: .5em;
+    width: 100%;
+    margin: .25em 0;
+    padding: .2em;
+}
+
+#show-coin-cont {
+    /* background-color: purple; */
+    padding: 0 1em;
+    grid-row: 1 / 11;
+    grid-column: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#chart-cont {
+    /* background-color: blue; */
+    height: 20em;
+    width: 90%;
+}
+
+#chart-button-cont {
+    /* background-color: lightblue; */
+    height: 3rem;
+    display: flex;
+    justify-content: flex-start;
+    padding: .5em;
+}
+
+.chart-button {
+    font-size: .6em;
+    border: 1px solid darkgrey;
+    border-radius: .5em;
+    width: 5em;
+    padding: .6em;
+    margin: 0 .25em;
+}
+
+#details-hr {
+    width: 90%;
+    margin: 5rem 0 3rem 0;
+}
+
+#details-cont {
+    height: 10em;
+    width: 90%;
+    display: grid;
+    grid-template: 1fr 1fr / 1fr 1fr 1fr
+}
+
+#details-cont label {
+    font-weight: 600;
+}
+
+#details-cont p {
+    color: rgba(0, 169, 206, 1);
 }
 
 /* Log Out Page */
 #goodbye {
     margin: 10% 0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
 }
