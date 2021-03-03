@@ -45,6 +45,10 @@ class Portfolio extends React.Component {
                 })
                 if (this.state.coins.length) {
                     this.setCurrentPrice()
+                } else {
+                    this.setState({
+                        loading: false
+                    })
                 }
             })
     }
