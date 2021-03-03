@@ -17,7 +17,7 @@ class SignUp extends React.Component {
     }
     createUser = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:8080/clients',
+        axios.post('https://mysterious-atoll-88793.herokuapp.com/clients',
             {
                 name: this.state.name,
                 email: this.state.email,
@@ -34,7 +34,7 @@ class SignUp extends React.Component {
         this.props.history.push('/login', {email: this.state.email})
     }
     getUsers = () => {
-        axios.get('http://localhost:8080/clients')
+        axios.get('https://mysterious-atoll-88793.herokuapp.com/clients')
             .then((res) => {
                 this.setState({
                     users: res.data
