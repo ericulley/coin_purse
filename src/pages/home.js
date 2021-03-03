@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-import SignUp from './signup.js'
+import Footer from '../components/footer.js'
 
 class Home extends React.Component {
     state = {
@@ -20,15 +20,12 @@ class Home extends React.Component {
         }
 
         return (
-            <React.Fragment>
+            <div id="home-cont">
                 <h1 id="logo-header">Welcome to</h1>
-                <img id="welcome-logo" src="/logos/LOGO.svg" alt="coinpurse-logo"/>
+                <img id="welcome-logo" src="/logos/LOGO_BLK.svg" alt="coinpurse-logo"/>
                 <br/>
-                <Link to={directTo}>
-                    <button className="get-started">Get Started</button>
-                </Link>
-
-            </React.Fragment>
+                <button className="get-started"><Link to={directTo}>Get Started</Link></button>
+            </div>
         )
     }
 }

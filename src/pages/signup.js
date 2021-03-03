@@ -24,23 +24,17 @@ class SignUp extends React.Component {
                 password: this.state.password,
             })
             .then((res) => {
-                this.setState({
-                    name: '',
-                    email: '',
-                    password: '',
-                    bio: '',
-                    users: res.data
-                })
-                console.log(res.data)
+
             })
             .catch((err) => {
                 console.log(err.response.data)
                 alert(`Error Status: ${err.response.data.status}: ${err.response.data.error}: ${err.response.data.message}`)
             })
         document.getElementById('sign-up-form').reset()
+        this.props.history.push('/login', {email: this.state.email})
     }
     getUsers = () => {
-        axios.get('https://mysterious-atoll-88793.herokuapp.com/clients')
+        axios.get('http://localhost:8080/clients')
             .then((res) => {
                 this.setState({
                     users: res.data
@@ -51,19 +45,17 @@ class SignUp extends React.Component {
     render = () => {
         return (
             <div id="sign-up-cont">
-            <h2>Sign Up</h2>
-            <form id="sign-up-form" onSubmit={this.createUser}>
-                <label htmlFor="name">First Name:</label>
-                <input id="name" onKeyUp={this.handleChange} type="text" />
-                <br/>
-                <label htmlFor="email">Email:</label>
-                <input id="email" onKeyUp={this.handleChange} type="text" />
-                <br/>
-                <label htmlFor="password">Password:</label>
-                <input id="password" onKeyUp={this.handleChange} type="password" />
-                <br/>
-                <input type="submit" value="Create New User"/>
-            </form>
+                <img className="logo" src="/logos/ICON.svg" alt="coinpurse-logo"/>
+                <h2>Sign Up</h2>
+                <form id="sign-up-form" onSubmit={this.createUser}>
+                    <label htmlFor="name">First Name</label>
+                    <input id="name" onKeyUp={this.handleChange} type="text" />
+                    <label htmlFor="email">Email</label>
+                    <input id="email" onKeyUp={this.handleChange} type="text" />
+                    <label htmlFor="password">Password</label>
+                    <input id="password" onKeyUp={this.handleChange} type="password" />
+                    <input id="sign-up-submit" type="submit" value="Create New User"/>
+                </form>
             </div>
         )
     }

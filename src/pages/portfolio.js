@@ -1,142 +1,160 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
+
+import Footer from '../components/footer.js'
+
 const API_KEY = process.env.REACT_APP_NOMICS_API_KEY
+
+
 
 class Portfolio extends React.Component {
     state = {
-        name: '',
         symbol: '',
-        purchaseAmount: null,
+        amount: null,
         editPurchaseAmount: null,
         coins: [],
+        loading: false
     }
     handleAddCoinChange = (event) => {
         this.setState({
             [event.target.id]: event.target.type === 'number' ? event.target.value - 0 : event.target.value.toLowerCase(),
         })
     }
-    handleUpdateCoinChange = (event) => {
-        this.setState({
-            [event.target.id]: event.target.type === 'number' ? event.target.value - 0 : event.target.value,
-        })
-    }
     createNewCoin = (event) => {
         event.preventDefault()
-        axios.post('https://mysterious-atoll-88793.herokuapp.com/coins', this.state)
-            .then((res) => {
-                axios.post('https://mysterious-atoll-88793.herokuapp.com/wallets',
-                    {
-                        client: this.props.parentState.userID,
-                        coinId: res.data.id,
-                        coinSymbol: res.data.symbol,
-                        amountOwned: this.state.purchaseAmount
-                    })
-                .then((res) => {
-                console.log(res.data)
-                this.getPortfolio()
+        axios.post('https://mysterious-atoll-88793.herokuapp.com/wallets',
+            {
+                client: this.props.parentState.userID,
+                coinSymbol: this.state.symbol,
+                amountOwned: this.state.amount
             })
-        })
+            .then((res) => {
+            console.log(res.data)
+            this.getPortfolio()
+            })
+            .catch((err) => {
+                alert(err.response.data.message)
+            })
         document.getElementById('new-coin-form').reset()
     }
-    updateCoin = (event) => {
-        event.preventDefault()
-        axios.put('https://mysterious-atoll-88793.herokuapp.com/coins/' + event.target.id,
-            {
-                purchaseAmount: this.state.editPurchaseAmount
-            })
-            .then((res) => {
-                this.getPortfolio()
-            })
-        document.getElementById(event.target.id).reset()
-    }
     getPortfolio = () => {
+        this.setState({loading: true})
         axios.get('https://mysterious-atoll-88793.herokuapp.com/wallets/' + this.props.parentState.userID)
             .then((res) => {
                 this.setState({
-                    coins: []
+                    coins: res.data
                 })
-                for (let i = 0; i < res.data.length; i++) {
-                    console.log(res.data[i].coinId)
-                    axios.get('https://mysterious-atoll-88793.herokuapp.com/coins/' + res.data[i].coinId)
-                        .then((res2) => {
-                            console.log(res2.data)
-                            this.state.coins.push(res2.data)
-                            this.setCurrentPrice()
-                        })
+                if (this.state.coins.length) {
+                    this.setCurrentPrice()
                 }
             })
     }
     setCurrentPrice = () => {
-        // Fetch Price for Each Coin
+        // Check for Coins in Porfolio
+        let coinsToFetch = ''
+        // Format Coin Symbols for Fetch
         this.state.coins.forEach((coin, i) => {
-            // Fetch Price
-            axios
-                .get(`https://api.nomics.com/v1/currencies/ticker?key=${API_KEY}&ids=${coin.symbol.toUpperCase()}&interval=1d`)
-                // Update prices in mirror array
-                .then((res) => {
-                    this.state.coins[i].currentPrice = res.data[0].price
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
+            i === this.state.coins.length - 1 ? coinsToFetch += coin.coinSymbol.toUpperCase() : coinsToFetch += (coin.coinSymbol.toUpperCase() + ',')
         })
-    }
-    remove = (event) => {
-        axios.delete('https://mysterious-atoll-88793.herokuapp.com/wallets/' + event.target.id)
+        // Fetch Prices
+        axios.get(`https://api.nomics.com/v1/currencies/ticker?key=${API_KEY}&ids=${coinsToFetch}&interval=1d`)
             .then((res) => {
-            this.getPortfolio()
-            })
-            .catch((err) => {
-                console.log(err)
+                // Sort Results
+                res.data.sort((a, b) => {
+                    if (a.symbol > b.symbol) {
+                        return 1
+                    } else if (a.symbol < b.symbol) {
+                        return -1
+                    } else {
+                        return 0
+                    }
+                })
+                // ShallowCopy
+                let shallowCopy = this.state.coins
+                // Sort ShallowCopy
+                shallowCopy.sort((a, b) => {
+                    if (a.coinSymbol > b.coinSymbol) {
+                        return 1
+                    } else if (a.coinSymbol < b.coinSymbol) {
+                        return -1
+                    } else {
+                        return 0
+                    }
+                })
+                // Set Prices to Copy
+                res.data.forEach((response, i) => {
+                    shallowCopy[i].currentPrice = (response.price - 0).toFixed(5)
+                    shallowCopy[i].name = response.name
+                    shallowCopy[i].img = response.logo_url
+                })
+                // Set Copy to Actual Prices
+                this.setState({
+                    coins: shallowCopy,
+                    loading: false
+                })
             })
     }
     componentDidMount = () => {
         this.getPortfolio()
     }
     render = () => {
-        return (
-            <div>
-                <h1>Add Coin</h1>
-                <form id="new-coin-form" onSubmit={this.createNewCoin}>
-                    <label htmlFor="name">Coin Name</label>
-                    <input id="name" type="text" onChange={this.handleAddCoinChange}/>
-                    <br/>
-                    <label htmlFor="symbol">Coin Symbol</label>
-                    <input id="symbol" type="text" onChange={this.handleAddCoinChange}/>
-                    <br/>
-                    <label htmlFor="purchaseAmount">Purchase Amount</label>
-                    <input id="purchaseAmount" type="number" step="0.00001" onChange={this.handleAddCoinChange}/>
-                    <br/>
-                    <input type="submit" value="Add To Portfolio" />
-                </form>
-                <h1>Portfolio</h1>
-                <div id="portfolio-cont">
-                {this.state.coins.map((coin) => {
-                    return (
-                        <div className="coin-cont" key={coin.id}>
-                            <div className="coin-display">
-                                <p>{coin.name[0].toUpperCase() + coin.name.slice(1)}</p>
-                                <p>{coin.symbol.toUpperCase()}</p>
+        if (this.state.loading) {
+            return <div id="loading">Loading...</div>
+        } else {
+            return (
+                <div id="portfolio-page">
+                    <form id="new-coin-form" onSubmit={this.createNewCoin}>
+                        <h3 id="add-coin-header">Add Coin</h3>
+                        <label htmlFor="symbol">Coin Symbol</label>
+                        <input id="symbol" type="text" onChange={this.handleAddCoinChange}/>
+                        <label htmlFor="amount">Amount Owned</label>
+                        <input id="amount" type="number" step="0.00001" onChange={this.handleAddCoinChange}/>
+                        <input id="add-to-portfolio" type="submit" value="Add To Portfolio" />
+                    </form>
+                    <div id="portfolio-cont">
+                        <h2 id="portfolio-header">Portfolio</h2>
+                        <div id="portfolio">
+                            <div className="portfolio-labels">
+                                <div id="portfolio-label-logo" className="coin-img coin-item"/>
+                                <p className="coin-item">Crypto</p>
+                                <p className="coin-price coin-item">Price</p>
+                                <div className="coin-value-cont coin-item">
+                                    <p className="amt-owned">Owned / Value</p>
+                                </div>
+                                <p>Details</p>
                             </div>
-                            Price: <p>${(coin.currentPrice - 0).toFixed(2)}</p>
-                            Amount Owned: <p>{coin.purchaseAmount}</p>
-                            Current Owned Value: <p>${(coin.purchaseAmount * coin.currentPrice).toFixed(2)}</p>
-                            <details>
-                                <summary>Edit</summary>
-                                <form id={coin.id} onSubmit={this.updateCoin}>
-                                    <label htmlFor="editPurchaseAmount">Amount Owned</label>
-                                    <input id="editPurchaseAmount" type="number" step="0.00001" onChange={this.handleUpdateCoinChange}/>
-                                    <br/>
-                                    <input type="submit" value="Update Coin" />
-                                </form>
-                            </details>
-                            <button id={coin.id} onClick={this.remove}>Remove Coin</button>
+                        {this.state.coins.map((coin) => {
+                            return (
+                                <div className="coin-cont" key={coin.id}>
+                                    <img className="coin-img coin-item" src={coin.img} alt="coin" />
+                                    <div className="coin-name-cont coin-item">
+                                        <p className="coin-name">{coin.name}</p>
+                                        <p className="coin-symbol">{coin.coinSymbol.toUpperCase()}</p>
+                                    </div>
+                                    <p className="coin-price coin-item">{coin.currentPrice}</p>
+                                    <div className="coin-value-cont coin-item">
+                                        <p className="amt-owned">Amt Owned: {coin.amountOwned}</p>
+                                        <p className="amt-value">Value: ${(coin.amountOwned * coin.currentPrice).toFixed(2)}</p>
+                                    </div>
+
+                                    <button>
+                                        <Link to={{
+                                                pathname: `/show/${coin.name}`,
+                                                state: {
+                                                    walletID: coin.id,
+                                                    amountOwned: coin.amountOwned
+                                                }
+                                            }}>View Details</Link>
+                                    </button>
+                                </div>
+                            )
+                        })}
                         </div>
-                    )
-                })}
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        }
     }
 }
 

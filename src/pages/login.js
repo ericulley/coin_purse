@@ -22,25 +22,32 @@ class LogIn extends React.Component {
                     password: '',
                     sessions: res.data
                 })
-                console.log(res.data)
                 this.props.getUserData(res.data)
             }
         )
         document.getElementById('login-form').reset()
     }
+    componentDidMount = () => {
+        if (this.props.location.state) {
+            this.setState({
+                email: this.props.location.state.email
+            })
+        }
+    }
     render = () => {
         return (
             <div id="login-cont">
-            <h2>Log In</h2>
-            <form id="login-form" onSubmit={this.newSession}>
-                <label htmlFor="email">Email:</label>
-                <input id="email" onKeyUp={this.handleChange} type="text" />
-                <br/>
-                <label htmlFor="password">Password:</label>
-                <input id="password" onKeyUp={this.handleChange} type="password" />
-                <br/>
-                <input type="submit" value="Log In"/>
-            </form>
+                <img className="logo" src="/logos/ICON.svg" alt="coinpurse-logo"/>
+                <h2>Log In</h2>
+                <form id="login-form" onSubmit={this.newSession}>
+                    <label htmlFor="email">Email:</label>
+                    <input id="email" onKeyUp={this.handleChange} type="text" defaultValue={this.props.location.state ? this.props.location.state.email : ""} />
+                    <br/>
+                    <label htmlFor="password">Password:</label>
+                    <input id="password" onKeyUp={this.handleChange} type="password" />
+                    <br/>
+                    <input type="submit" value="Log In"/>
+                </form>
             </div>
         )
     }

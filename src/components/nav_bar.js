@@ -6,6 +6,9 @@ class NavBar extends React.Component {
         let controls
         if (this.props.parentState.authorized) {
             controls = <React.Fragment>
+                <NavLink to={`/profile`}>
+                    <h2>Profile</h2>
+                </NavLink>
                 <NavLink to={`/logout`}>
                     <h2>Log Out</h2>
                 </NavLink>
@@ -16,7 +19,7 @@ class NavBar extends React.Component {
                     <h2>Log In</h2>
                 </NavLink>
                 <NavLink to={`/signup`}>
-                    <button><h2>Get Started</h2></button>
+                    <button><p>Get Started</p></button>
                 </NavLink>
             </React.Fragment>
         }
@@ -26,19 +29,17 @@ class NavBar extends React.Component {
                     <NavLink to={`/`}>
                         <div id="nav-logo-cont">
                             <img src="/logos/ICON.svg" alt="cp_logo"/>
-                            <h1 className="logo">COIN PURSE</h1>
                         </div>
+                    </NavLink>
+                    <NavLink to={'/market'}>
+                        <h2>Market</h2>
                     </NavLink>
                     <NavLink to={'/portfolio'}>
                         <h2>Portfolio</h2>
                     </NavLink>
                 </div>
                 <div id="right-nav">
-                    <NavLink to={`/profile`}>
-                        <h2>Profile</h2>
-                    </NavLink>
                     {controls}
-
                 </div>
             </div>
         )
