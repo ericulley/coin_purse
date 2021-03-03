@@ -2,8 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-import Footer from '../components/footer.js'
-
 const API_KEY = process.env.REACT_APP_NOMICS_API_KEY
 
 

@@ -4,7 +4,6 @@ import axios from 'axios'
 
 // Components
 import HistChart from '../components/hist_chart.js'
-import Footer from '../components/footer.js'
 
 const Show = (props) => {
     const [coinData, setCoinData] = useState(
