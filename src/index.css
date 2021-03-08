@@ -114,7 +114,7 @@ h3 {
 .footer-section {
     font-size: .8em;
     height: auto;
-    width: 10rem;
+    width: 12rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -124,6 +124,10 @@ h3 {
     background-color: darkgrey;
     height: auto;
     width: 2px;
+}
+
+#nomics-link {
+    font-size: .8em;
 }
 
 /* Loading */
