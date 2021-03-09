@@ -60,7 +60,7 @@ class Portfolio extends React.Component {
             i === this.state.coins.length - 1 ? coinsToFetch += coin.coinSymbol.toUpperCase() : coinsToFetch += (coin.coinSymbol.toUpperCase() + ',')
         })
         // Fetch Prices
-        axios.get(`https://api.nomics.com/v1/currencies/ticker?key=${API_KEY}&ids=${coinsToFetch}&interval=1d`, {headers:{'Access-Control-Allow-Origin': '*'}})
+        axios.get(`https://api.nomics.com/v1/currencies/ticker?key=${API_KEY}&ids=${coinsToFetch}&interval=1d`)
             .then((res) => {
                 // Sort Results
                 res.data.sort((a, b) => {
