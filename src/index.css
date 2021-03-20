@@ -15,12 +15,8 @@ body {
     text-align: center;
 }
 
-.App {
-    /* min-height: calc(100vh - 5rem); */
-}
-
 #wrapper {
-    min-height: calc(100vh - 5rem);
+    /* min-height: calc(100vh - 5rem); */
 }
 
 a {
@@ -36,7 +32,6 @@ button {
 h1 {
     font-family: 'Oswald', sans-serif;
     color: black;
-    /* color: #00a9ce; */
 }
 
 h2 {
@@ -212,6 +207,7 @@ h3 {
 }
 
 #portfolio-page {
+    height: calc(100vh - 8rem);
     width: 96%;
     margin: 0 auto;
     display: grid;
@@ -264,6 +260,15 @@ h3 {
     padding: 0 1em;
     grid-row: 1 / 11;
     grid-column: 2 / 3;
+}
+
+#portfolio-cont::-webkit-scrollbar {
+    height: 0px;
+}
+
+#portfolio-cont::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    border-radius: 1rem;
 }
 
 .portfolio-labels {
