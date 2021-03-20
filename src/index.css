@@ -199,6 +199,13 @@ h3 {
     padding: .5em;
 }
 
+/* Market Page */
+#market-cont {
+    width: 90%;
+    margin: 0 auto;
+}
+
+
 /* Portfolio Page */
 #portfolio-header, #add-coin-header {
     text-align: left;
@@ -303,11 +310,19 @@ h3 {
 
 .coin-name-cont {
     height: 100%;
-    width: 20%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+}
+
+.coin-price {
+    width: 20%;
+}
+
+.coin-change {
+    width: 20%;
 }
 
 .coin-name {
@@ -315,9 +330,17 @@ h3 {
     font-weight: 600;
 }
 
+.coin-value-cont {
+    width: 20%;
+}
+
+.coin-details {
+    width: 10%;
+}
+
 /* Show Page */
 #show-page {
-    height: calc(100vh - 3rem);
+    height: calc(100vh - 8rem);
     width: 96%;
     margin: 0 auto;
     display: grid;
@@ -351,7 +374,6 @@ h3 {
 }
 
 #edit-coin-cont label {
-    /* text-align: left !important; */
     font-size: 1em;
     margin-top: .25em;
 }
@@ -379,8 +401,8 @@ h3 {
 }
 
 #show-coin-cont {
-    /* background-color: purple; */
     padding: 0 1em;
+    overflow: scroll;
     grid-row: 1 / 11;
     grid-column: 2 / 3;
     display: flex;
@@ -388,14 +410,21 @@ h3 {
     align-items: flex-start;
 }
 
+#show-coin-cont::-webkit-scrollbar {
+    height: 0px;
+}
+
+#show-coin-cont::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    border-radius: 1rem;
+}
+
 #chart-cont {
-    /* background-color: blue; */
     height: 20em;
     width: 90%;
 }
 
 #chart-button-cont {
-    /* background-color: lightblue; */
     height: 3rem;
     display: flex;
     justify-content: flex-start;

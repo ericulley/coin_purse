@@ -119,12 +119,10 @@ class Portfolio extends React.Component {
                         <div id="portfolio">
                             <div className="portfolio-labels">
                                 <div id="portfolio-label-logo" className="coin-img coin-item"/>
-                                <p className="coin-item">Crypto</p>
+                                <p className="coin-item coin-name-cont">Crypto</p>
                                 <p className="coin-price coin-item">Price</p>
-                                <div className="coin-value-cont coin-item">
-                                    <p className="amt-owned">Owned / Value</p>
-                                </div>
-                                <p>Details</p>
+                                <p className="coin-value-cont amt-owned">Owned</p>
+                                <p className="coin-details">Details</p>
                             </div>
                         {this.state.coins.map((coin) => {
                             return (
@@ -134,13 +132,13 @@ class Portfolio extends React.Component {
                                         <p className="coin-name">{coin.name}</p>
                                         <p className="coin-symbol">{coin.coinSymbol.toUpperCase()}</p>
                                     </div>
-                                    <p className="coin-price coin-item">{coin.currentPrice}</p>
+                                    <p className="coin-price coin-item">${coin.currentPrice}</p>
                                     <div className="coin-value-cont coin-item">
-                                        <p className="amt-owned">Amt Owned: {coin.amountOwned}</p>
+                                        <p className="amt-owned">Amount: {coin.amountOwned}</p>
                                         <p className="amt-value">Value: ${(coin.amountOwned * coin.currentPrice).toFixed(2)}</p>
                                     </div>
 
-                                    <button>
+                                    <button className="coin-details">
                                         <Link to={{
                                                 pathname: `/show/${coin.name}`,
                                                 state: {
