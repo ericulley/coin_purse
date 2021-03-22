@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import axios from 'axios'
 
 class Home extends React.Component {
     state = {
@@ -8,6 +9,9 @@ class Home extends React.Component {
         purchasePrice: null,
         purchaseAmount: null,
         currentPrice: null,
+    }
+    componentDidMount = () => {
+        axios.get('https://mysterious-atoll-88793.herokuapp.com')
     }
     render = () => {
         let directTo
