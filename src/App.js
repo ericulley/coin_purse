@@ -12,6 +12,7 @@ import Profile from './pages/profile.js'
 import Portfolio from './pages/portfolio.js'
 import Market from './pages/market.js'
 import Show from './pages/show.js'
+import MarketShow from './pages/market_show.js'
 import Footer from './components/footer.js'
 
 // React App (Parent Component)
@@ -66,6 +67,10 @@ class App extends React.Component {
                         <Route path='/show/:id' exact render={props =>
                             <Show {...props} parentState={this.state}/>}
                             />
+
+                        <Route path='/market-show/:id' exact render={props =>
+                            <MarketShow {...props} parentState={this.state}/>}
+                            />    
 
                     </Switch>
                     </div>

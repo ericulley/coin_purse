@@ -31,6 +31,11 @@ class Market extends React.Component {
             })
         })
     }
+    // Check if coin is in the portfolio of current user
+    alreadyOwned = () => {
+
+    }
+
     handleChange = (event) => {
         this.setState({
             [event.target.id]: event.target.value,
@@ -66,7 +71,7 @@ class Market extends React.Component {
                                     <p className="coin-change coin-item" style={coin['1d'].price_change > 0 ? {color:'green'} : {color:'red'} }>{coin['1d'].price_change}</p>
                                     <button className="coin-details">
                                         <Link to={{
-                                                pathname: `/show/${coin.name}`,
+                                                pathname: `/market-show/${coin.name}`,
                                                 state: {}
                                             }}>View Details</Link>
                                     </button>
