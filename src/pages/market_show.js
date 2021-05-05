@@ -59,6 +59,10 @@ const MarketShow = (props) => {
         setIsLoading(false)
     }
 
+    const addToPortfolio = () => {
+
+    }
+
     useEffect(() => {
         fetchData(props.match.params.id.toLowerCase())
     }, [])
@@ -72,7 +76,7 @@ const MarketShow = (props) => {
                     <div id="market-watch-cont">
                         <h3 id="add-coin-header">Market Watch</h3>
 
-                        <button id="add-coin-button">Add to Portfolio</button>
+                        <button id="add-coin-button" onClick={addToPortfolio}>Add to Portfolio</button>
                     </div>
                     <div id="show-coin-cont">
                         <h2 id="show-header">{coinData.details.name}</h2>
