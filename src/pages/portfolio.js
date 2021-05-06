@@ -126,8 +126,10 @@ class Portfolio extends React.Component {
                             </div>
                         {this.state.coins.map((coin) => {
                             let coinName = coin.name.replace(/\s/g, '')
-                            if (coinName === "bitcoincash") {
+                            if (coinName === "BitcoinCash") {
                                 coin.name = "bitcoin-cash"
+                            } else if (coinName === "UniswapProtocolToken") {
+                                coin.name = "uniswap"
                             } else {
                                 coin.name = coinName
                             }

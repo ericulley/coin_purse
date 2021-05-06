@@ -79,6 +79,8 @@ const MarketShow = (props) => {
         coin = coin.replace(/\s/g, '')
         if (coin === "bitcoincash") {
             coin = "bitcoin-cash"
+        } else if (coin === "uniswapprotocoltoken") {
+            coin = "uniswap"
         }
         fetchData(coin)
     }, [])
