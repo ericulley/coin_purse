@@ -60,7 +60,18 @@ const MarketShow = (props) => {
     }
 
     const addToPortfolio = () => {
-
+        axios.post('https://mysterious-atoll-88793.herokuapp.com/wallets',
+            {
+                client: props.parentState.userID,
+                coinSymbol: coinData.details.symbol,
+                amountOwned: 0
+            })
+            .then((res) => {
+                props.history.push('/portfolio')
+            })
+            .catch((err) => {
+                alert(err.response.data.message)
+            })
     }
 
     useEffect(() => {
