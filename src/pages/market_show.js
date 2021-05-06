@@ -66,6 +66,9 @@ const MarketShow = (props) => {
     useEffect(() => {
         let coin = props.match.params.id.toLowerCase()
         coin = coin.replace(/\s/g, '')
+        if (coin === "bitcoincash") {
+            coin = "bitcoin-cash"
+        }
         fetchData(coin)
     }, [])
 
