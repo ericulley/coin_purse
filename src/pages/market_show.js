@@ -44,6 +44,7 @@ const MarketShow = (props) => {
         return res.data[0];
       }),
     ]);
+
     setCoinData({
       day: formatData(day.prices),
       week: formatData(week.prices),
@@ -55,9 +56,10 @@ const MarketShow = (props) => {
   };
 
   const addToPortfolio = () => {
+    console.log("Coin Details: ", coinData.details);
     axios
       .post(`${apiDomain}/api/v2/wallets`, {
-        user: props.parentState.userID,
+        owner: props.parentState.userID,
         coinSymbol: coinData.details.symbol,
         amountOwned: 0,
       })

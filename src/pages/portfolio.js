@@ -13,11 +13,13 @@ class Portfolio extends React.Component {
     coins: [],
     loading: false,
   };
+
   handleAddCoinChange = (event) => {
     this.setState({
       [event.target.id]: event.target.type === "number" ? event.target.value - 0 : event.target.value.toLowerCase(),
     });
   };
+
   createNewCoin = (event) => {
     event.preventDefault();
     console.log("User ID: ", this.props.parentState.userID);
@@ -36,12 +38,13 @@ class Portfolio extends React.Component {
       });
     document.getElementById("new-coin-form").reset();
   };
+
   getPortfolio = () => {
     this.setState({ loading: true });
     axios.get(`${apiDomain}/api/v2/wallets/` + this.props.parentState.userID).then((res) => {
       console.log("Wallet Response: ", res.data);
       this.setState({
-        coins: res.data || [],
+        coins: [res.data] || [],
       });
       if (this.state.coins?.length) {
         this.setCurrentPrice();
@@ -52,6 +55,7 @@ class Portfolio extends React.Component {
       }
     });
   };
+
   setCurrentPrice = () => {
     // Check for Coins in Porfolio
     let coinsToFetch = "";
@@ -96,9 +100,11 @@ class Portfolio extends React.Component {
       });
     });
   };
+
   componentDidMount = () => {
     this.getPortfolio();
   };
+
   render = () => {
     if (this.state.loading) {
       return <div id="loading">Loading...</div>;
@@ -123,44 +129,45 @@ class Portfolio extends React.Component {
                 <p className="coin-value-cont amt-owned">Owned</p>
                 <p className="coin-details">Details</p>
               </div>
-              {this.state.coins?.map((coin) => {
-                let coinName = coin.name.replace(/\s/g, "");
-                if (coinName === "BitcoinCash") {
-                  coin.name = "bitcoin-cash";
-                } else if (coinName === "UniswapProtocolToken") {
-                  coin.name = "uniswap";
-                } else {
-                  coin.name = coinName;
-                }
-                return (
-                  <div className="coin-cont" key={coin.id}>
-                    <img className="coin-img coin-item" src={coin.img} alt="coin" />
-                    <div className="coin-name-cont coin-item">
-                      <p className="coin-name">{coin.name}</p>
-                      <p className="coin-symbol">{coin.coinSymbol.toUpperCase()}</p>
-                    </div>
-                    <p className="coin-price coin-item">${coin.currentPrice}</p>
-                    <div className="coin-value-cont coin-item">
-                      <p className="amt-owned">Amount: {coin.amountOwned}</p>
-                      <p className="amt-value">Value: ${(coin.amountOwned * coin.currentPrice).toFixed(2)}</p>
-                    </div>
+              {this.state.coins &&
+                this.state.coins.map((coin) => {
+                  let coinName = coin.name.replace(/\s/g, "");
+                  if (coinName === "BitcoinCash") {
+                    coin.name = "bitcoin-cash";
+                  } else if (coinName === "UniswapProtocolToken") {
+                    coin.name = "uniswap";
+                  } else {
+                    coin.name = coinName;
+                  }
+                  return (
+                    <div className="coin-cont" key={coin.id}>
+                      <img className="coin-img coin-item" src={coin.img} alt="coin" />
+                      <div className="coin-name-cont coin-item">
+                        <p className="coin-name">{coin.name}</p>
+                        <p className="coin-symbol">{coin.coinSymbol.toUpperCase()}</p>
+                      </div>
+                      <p className="coin-price coin-item">${coin.currentPrice}</p>
+                      <div className="coin-value-cont coin-item">
+                        <p className="amt-owned">Amount: {coin.amountOwned}</p>
+                        <p className="amt-value">Value: ${(coin.amountOwned * coin.currentPrice).toFixed(2)}</p>
+                      </div>
 
-                    <button className="coin-details">
-                      <Link
-                        to={{
-                          pathname: `/show/${coin.name}`,
-                          state: {
-                            walletID: coin.id,
-                            amountOwned: coin.amountOwned,
-                          },
-                        }}
-                      >
-                        View Details
-                      </Link>
-                    </button>
-                  </div>
-                );
-              })}
+                      <button className="coin-details">
+                        <Link
+                          to={{
+                            pathname: `/show/${coin.name}`,
+                            state: {
+                              walletID: coin.id,
+                              amountOwned: coin.amountOwned,
+                            },
+                          }}
+                        >
+                          View Details
+                        </Link>
+                      </button>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>
