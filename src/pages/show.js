@@ -26,7 +26,8 @@ const Show = (props) => {
     setUpdated(true);
     event.preventDefault();
     props.location.state.amountOwned = amountOwned.amountOwned;
-    axios.put(`${apiDomain}/api/v2/wallets/` + props.location.state.walletID, amountOwned).then((res) => {
+    console.log("Show Props: ", props.location.state.id);
+    axios.put(`${apiDomain}/api/v2/wallets/` + props.location.state.id, amountOwned).then((res) => {
       setUpdated(false);
     });
     document.getElementById(event.target.id).reset();
@@ -34,7 +35,7 @@ const Show = (props) => {
 
   const removeCoin = (event) => {
     axios
-      .delete(`${apiDomain}/api/v2/wallets/` + props.location.state.walletID)
+      .delete(`${apiDomain}/api/v2/wallets/` + props.location.state.id)
       .then((res) => {
         props.history.push("/portfolio");
       })
@@ -54,6 +55,7 @@ const Show = (props) => {
 
   const fetchData = async (coin) => {
     setIsLoading(true);
+    console.log(coin);
     const [day, week, month, year, details] = await Promise.all([
       axios.get(`https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&days=1`).then((res) => {
         return res.data;
@@ -82,8 +84,8 @@ const Show = (props) => {
   };
 
   useEffect(() => {
-    fetchData(props.match.params.id.toLowerCase());
-  }, [updated]);
+    fetchData(props.match.params.id);
+  }, [props, updated]);
 
   const render = () => {
     if (isLoading) {

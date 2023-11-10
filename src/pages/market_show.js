@@ -83,7 +83,7 @@ const MarketShow = (props) => {
       coin = "uniswap";
     }
     fetchData(coin);
-  }, []);
+  }, [props]);
 
   const render = () => {
     if (isLoading) {

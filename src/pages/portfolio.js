@@ -42,6 +42,8 @@ class Portfolio extends React.Component {
   getPortfolio = () => {
     this.setState({ loading: true });
     axios.get(`${apiDomain}/api/v2/wallets/` + this.props.parentState.userID).then((res) => {
+      // console.log("Wallet Response: ", res.data);
+      res.data.forEach((item) => (item.idString = item.id.toString()));
       console.log("Wallet Response: ", res.data);
       this.setState({
         coins: res.data || [],
@@ -164,11 +166,8 @@ class Portfolio extends React.Component {
                       <button className="coin-details">
                         <Link
                           to={{
-                            pathname: `/show/${coin.name}`,
-                            state: {
-                              walletID: coin.id,
-                              amountOwned: coin.amountOwned,
-                            },
+                            pathname: `/show/${coin.coinId}`,
+                            state: coin,
                           }}
                         >
                           View Details
