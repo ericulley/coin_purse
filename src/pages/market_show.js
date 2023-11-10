@@ -10,7 +10,7 @@ const apiDomain = process.env.REACT_APP_API_DOMAIN;
 const MarketShow = (props) => {
   const [coinData, setCoinData] = useState({
     details: {
-      name: props.match.params.id,
+      id: props.match.params.id,
     },
   });
 
@@ -61,17 +61,20 @@ const MarketShow = (props) => {
       .post(`${apiDomain}/api/v2/wallets`, {
         owner: props.parentState.userID,
         coinSymbol: coinData.details.symbol,
+        coinId: coinData.details.id,
+        coinImg: coinData.details.image,
         amountOwned: 0,
       })
       .then((res) => {
         props.history.push("/portfolio");
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        alert("Please login and try again.\nError: " + err.response.data.message);
       });
   };
 
   useEffect(() => {
+    console.log("Props: ", props);
     let coin = props.match.params.id.toLowerCase();
     coin = coin.replace(/\s/g, "");
     if (coin === "bitcoincash") {

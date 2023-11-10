@@ -10,16 +10,18 @@ class Market extends React.Component {
     loading: false,
     coins: [],
   };
+
   getTopCoins = () => {
     this.setState({ loading: true });
     axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=USD&order=market_cap_desc&per_page=10&page=1&percision=3`).then((res) => {
-      console.log(res.data);
+      console.log("Top 10: ", res.data);
       this.setState({
         coins: res.data,
         loading: false,
       });
     });
   };
+
   // Future Feature
   searchBySymbol = (event) => {
     event.preventDefault();
@@ -30,6 +32,7 @@ class Market extends React.Component {
       });
     });
   };
+
   // Check if coin is in the portfolio of current user
   alreadyOwned = () => {};
 
@@ -38,9 +41,11 @@ class Market extends React.Component {
       [event.target.id]: event.target.value,
     });
   };
+
   componentDidMount = () => {
     this.getTopCoins();
   };
+
   render = () => {
     if (this.state.loading) {
       return <div id="loading">Loading...</div>;
@@ -71,7 +76,7 @@ class Market extends React.Component {
                   <button className="coin-details">
                     <Link
                       to={{
-                        pathname: `/market-show/${coin.name}`,
+                        pathname: `/market-show/${coin.id}`,
                         state: {},
                       }}
                     >

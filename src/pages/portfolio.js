@@ -44,7 +44,7 @@ class Portfolio extends React.Component {
     axios.get(`${apiDomain}/api/v2/wallets/` + this.props.parentState.userID).then((res) => {
       console.log("Wallet Response: ", res.data);
       this.setState({
-        coins: [res.data] || [],
+        coins: res.data || [],
       });
       if (this.state.coins?.length) {
         this.setCurrentPrice();
@@ -61,43 +61,59 @@ class Portfolio extends React.Component {
     let coinsToFetch = "";
     // Format Coin Symbols for Fetch
     this.state.coins.forEach((coin, i) => {
-      i === this.state.coins.length - 1 ? (coinsToFetch += coin.coinSymbol.toUpperCase()) : (coinsToFetch += coin.coinSymbol.toUpperCase() + ",");
+      console.log("coin.id: ", coin.coinId);
+      coinsToFetch += coin.coinId + ",";
+      // i === this.state.coins.length - 1 ? (coinsToFetch += coin.id) : (coinsToFetch += coin.id + ",");
     });
+    console.log("Coins to Fetch: ", coinsToFetch);
     // Fetch Prices
-    axios.get(`https://api.nomics.com/v1/currencies/ticker?key=${API_KEY}&ids=${coinsToFetch}&interval=1d`).then((res) => {
-      // Sort Results
-      res.data.sort((a, b) => {
-        if (a.symbol > b.symbol) {
-          return 1;
-        } else if (a.symbol < b.symbol) {
-          return -1;
-        } else {
-          return 0;
+    axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coinsToFetch}&vs_currencies=usd`).then((res) => {
+      console.log("Get Prices Repsonse: ", res.data);
+      console.log("State: ", this.state);
+      for (const coin in res.data) {
+        const foundCoin = this.state.coins.findIndex((c) => c.coinId === coin);
+        if (foundCoin > -1) {
+          console.log("Found! ", coin);
+          this.state.coins[foundCoin].currentPrice = res.data[coin].usd;
         }
-      });
-      // ShallowCopy
-      let shallowCopy = this.state.coins;
-      // Sort ShallowCopy
-      shallowCopy.sort((a, b) => {
-        if (a.coinSymbol > b.coinSymbol) {
-          return 1;
-        } else if (a.coinSymbol < b.coinSymbol) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-      // Set Prices to Copy
-      res.data.forEach((response, i) => {
-        shallowCopy[i].currentPrice = (response.price - 0).toFixed(5);
-        shallowCopy[i].name = response.name;
-        shallowCopy[i].img = response.logo_url;
-      });
-      // Set Copy to Actual Prices
+      }
+      console.log("State with Prices: ", this.state.coins);
       this.setState({
-        coins: shallowCopy,
         loading: false,
       });
+      // Sort Results
+      // res.data.sort((a, b) => {
+      //   if (a.symbol > b.symbol) {
+      //     return 1;
+      //   } else if (a.symbol < b.symbol) {
+      //     return -1;
+      //   } else {
+      //     return 0;
+      //   }
+      // });
+      // ShallowCopy
+      // let shallowCopy = this.state.coins;
+      // Sort ShallowCopy
+      // shallowCopy.sort((a, b) => {
+      //   if (a.coinSymbol > b.coinSymbol) {
+      //     return 1;
+      //   } else if (a.coinSymbol < b.coinSymbol) {
+      //     return -1;
+      //   } else {
+      //     return 0;
+      //   }
+      // });
+      // Set Prices to Copy
+      // res.data.forEach((response, i) => {
+      //   shallowCopy[i].currentPrice = (response.price - 0).toFixed(5);
+      //   shallowCopy[i].name = response.name;
+      //   shallowCopy[i].img = response.logo_url;
+      // });
+      // // Set Copy to Actual Prices
+      // this.setState({
+      //   coins: shallowCopy,
+      //   loading: false,
+      // });
     });
   };
 
@@ -131,17 +147,10 @@ class Portfolio extends React.Component {
               </div>
               {this.state.coins &&
                 this.state.coins.map((coin) => {
-                  let coinName = coin.name.replace(/\s/g, "");
-                  if (coinName === "BitcoinCash") {
-                    coin.name = "bitcoin-cash";
-                  } else if (coinName === "UniswapProtocolToken") {
-                    coin.name = "uniswap";
-                  } else {
-                    coin.name = coinName;
-                  }
+                  console.log("Coin in Portfolio: ", coin);
                   return (
-                    <div className="coin-cont" key={coin.id}>
-                      <img className="coin-img coin-item" src={coin.img} alt="coin" />
+                    <div className="coin-cont" key={coin.coinSymbol}>
+                      <img className="coin-img coin-item" src={coin.coinImg} alt="coin" />
                       <div className="coin-name-cont coin-item">
                         <p className="coin-name">{coin.name}</p>
                         <p className="coin-symbol">{coin.coinSymbol.toUpperCase()}</p>
