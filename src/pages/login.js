@@ -20,12 +20,16 @@ class LogIn extends React.Component {
   newSession = (event) => {
     event.preventDefault();
     axios.post(`${apiDomain}/api/v2/users/sessions`, this.state).then((res) => {
-      this.setState({
-        email: "",
-        password: "",
-        sessions: res.data,
-      });
-      this.props.getUserData(res.data);
+      if (res.data.authorized) {
+        this.setState({
+          email: "",
+          password: "",
+          sessions: res.data,
+        });
+        this.props.getUserData(res.data);
+      } else {
+        alert("Uknown or invalid credentials.");
+      }
     });
     document.getElementById("login-form").reset();
   };
