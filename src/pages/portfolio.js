@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const API_KEY = process.env.REACT_APP_NOMICS_API_KEY;
 const apiDomain = process.env.REACT_APP_API_DOMAIN;
 
 class Portfolio extends React.Component {
@@ -63,15 +62,12 @@ class Portfolio extends React.Component {
     let coinsToFetch = "";
     // Format Coin Symbols for Fetch
     this.state.coins.forEach((coin, i) => {
-      console.log("coin.id: ", coin.coinId);
       coinsToFetch += coin.coinId + ",";
-      // i === this.state.coins.length - 1 ? (coinsToFetch += coin.id) : (coinsToFetch += coin.id + ",");
     });
     console.log("Coins to Fetch: ", coinsToFetch);
     // Fetch Prices
     axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coinsToFetch}&vs_currencies=usd`).then((res) => {
       console.log("Get Prices Repsonse: ", res.data);
-      console.log("State: ", this.state);
       for (const coin in res.data) {
         const foundCoin = this.state.coins.findIndex((c) => c.coinId === coin);
         if (foundCoin > -1) {
@@ -79,43 +75,9 @@ class Portfolio extends React.Component {
           this.state.coins[foundCoin].currentPrice = res.data[coin].usd;
         }
       }
-      console.log("State with Prices: ", this.state.coins);
       this.setState({
         loading: false,
       });
-      // Sort Results
-      // res.data.sort((a, b) => {
-      //   if (a.symbol > b.symbol) {
-      //     return 1;
-      //   } else if (a.symbol < b.symbol) {
-      //     return -1;
-      //   } else {
-      //     return 0;
-      //   }
-      // });
-      // ShallowCopy
-      // let shallowCopy = this.state.coins;
-      // Sort ShallowCopy
-      // shallowCopy.sort((a, b) => {
-      //   if (a.coinSymbol > b.coinSymbol) {
-      //     return 1;
-      //   } else if (a.coinSymbol < b.coinSymbol) {
-      //     return -1;
-      //   } else {
-      //     return 0;
-      //   }
-      // });
-      // Set Prices to Copy
-      // res.data.forEach((response, i) => {
-      //   shallowCopy[i].currentPrice = (response.price - 0).toFixed(5);
-      //   shallowCopy[i].name = response.name;
-      //   shallowCopy[i].img = response.logo_url;
-      // });
-      // // Set Copy to Actual Prices
-      // this.setState({
-      //   coins: shallowCopy,
-      //   loading: false,
-      // });
     });
   };
 

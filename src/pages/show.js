@@ -55,7 +55,7 @@ const Show = (props) => {
 
   const fetchData = async (coin) => {
     setIsLoading(true);
-    console.log(coin);
+
     const [day, week, month, year, details] = await Promise.all([
       axios.get(`https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&days=1`).then((res) => {
         return res.data;

@@ -10,6 +10,7 @@ const Profile = (props) => {
     email: "email",
     bio: "bio",
   });
+
   useEffect(() => {
     axios.get(`${apiDomain}/api/v2/users/` + props.parentState.userID).then((res) => {
       console.log(res.data);
@@ -22,11 +23,13 @@ const Profile = (props) => {
       });
     });
   }, [props.parentState.userID]);
+
   const deleteClient = (event) => {
     axios.delete(`${apiDomain}/api/v2/users/` + props.parentState.userID).then((res) => {
       props.logOut();
     });
   };
+
   return (
     <div id="profile-cont">
       <img className="logo" src="/logos/ICON.svg" alt="coinpurse-logo" />

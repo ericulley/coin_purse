@@ -11,10 +11,11 @@ class Home extends React.Component {
     purchaseAmount: null,
     currentPrice: null,
   };
+
   componentDidMount = () => {
-    // axios.get(apiDomain);
     console.log(apiDomain);
   };
+
   render = () => {
     let directTo;
     if (this.props.parentState.authorized) {

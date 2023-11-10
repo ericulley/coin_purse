@@ -33,6 +33,7 @@ class SignUp extends React.Component {
     document.getElementById("sign-up-form").reset();
     this.props.history.push("/login", { email: this.state.email });
   };
+
   getUsers = () => {
     axios.get(`${apiDomain}/api/v2/users`).then((res) => {
       this.setState({
@@ -40,6 +41,7 @@ class SignUp extends React.Component {
       });
     });
   };
+
   render = () => {
     return (
       <div id="sign-up-cont">
